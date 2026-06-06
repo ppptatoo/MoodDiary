@@ -6,7 +6,6 @@
 [![Java](https://img.shields.io/badge/Java-1.8-orange?logo=java)](https://www.java.com)
 [![Room](https://img.shields.io/badge/Room-2.5.2-blue?logo=android)](https://developer.android.com/training/data-storage/room)
 [![Supabase](https://img.shields.io/badge/Supabase-Backend-3ECF8E?logo=supabase)](https://supabase.com)
-[![Pages](https://img.shields.io/badge/GitHub-Pages-222?logo=githubpages)](https://YOUR_USERNAME.github.io/MoodDiary)
 
 ---
 
@@ -53,30 +52,6 @@
 - 每周报告：每周日记回顾通知
 - 鼓励通知：随机推送正能量鼓励文案
 - 自定义提醒时间
-
----
-
-## 🌐 在线展示
-
-👉 **[访问项目展示页](https://YOUR_USERNAME.github.io/MoodDiary)** — 包含完整功能介绍、界面预览和技术栈展示。
-
-> 通过 GitHub Pages 部署，源码位于 `docs/index.html`。推送代码后自动生效，无需额外配置服务器。
-
----
-
-## 📸 界面预览
-
-| 首页日历 | 日记详情 | 心情分布 |
-|:--------:|:--------:|:--------:|
-| ![](docs/screenshots/home.png) | ![](docs/screenshots/detail.png) | ![](docs/screenshots/stats-pie.png) |
-
-| 情绪强度 | 情绪洞察 | 历史日记 |
-|:--------:|:--------:|:--------:|
-| ![](docs/screenshots/stats-bar.png) | ![](docs/screenshots/stats-insight.png) | ![](docs/screenshots/history.png) |
-
-| 个人中心 |
-|:--------:|
-| ![](docs/screenshots/profile.png) |
 
 ---
 
@@ -171,7 +146,6 @@ mooddiary/
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/your-username/MoodDiary.git
 cd MoodDiary
 
 # 2. 复制密钥配置模板
@@ -185,11 +159,6 @@ cp local.properties.example local.properties
 # ARK_IMAGE_MODEL_ID=YOUR_IMAGE_MODEL_ID
 
 # 4. 用 Android Studio 打开项目，Sync Gradle，点击 Run
-
-# 5.（可选）启用 GitHub Pages 展示页
-#     进入 GitHub 仓库 → Settings → Pages → Source 选 "Deploy from a branch"
-#     Branch 选 main，文件夹选 /docs → Save
-#     访问 https://YOUR_USERNAME.github.io/MoodDiary 即可看到展示页
 ```
 
 > **无需填写密钥即可运行**：不填 Supabase 和豆包密钥时，应用以纯本地模式运行，所有日记数据存储在本地 Room 数据库，AI 功能按钮不显示。
@@ -319,4 +288,3 @@ MIT License
 
 欢迎提交 Issue 和 Pull Request！
 
-如有问题或建议，请联系：`your-email@example.com`
