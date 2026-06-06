@@ -5,447 +5,1018 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>心迹日记 · 交互原型</title>
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    :root {
+        --primary: #5A7D9A;
+        --primary-light: #8FB98B;
+        --bg-soft: #F5F0EB;
+        --card: #fff;
+        --text: #3D3226;
+        --text-sub: #8B7355;
+        --text-light: #B8A899;
+        --radius: 16px;
+        --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+        --shadow-md: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
     body {
         font-family: 'Noto Sans SC', sans-serif;
-        background: linear-gradient(135deg, #e8f0fe 0%, #f0e6ff 100%);
+        background: linear-gradient(160deg, #f3ece4 0%, #e8e4df 30%, #eef3f5 70%, #e3eaf2 100%);
         min-height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 24px 16px 40px;
+        padding: 32px 16px 40px;
+        color: var(--text);
     }
 
-    /* 顶部提示 */
-    .top-bar {
+    /* ====== 顶部标题区 ====== */
+    .page-header {
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 24px;
     }
-    .top-bar h2 {
-        font-size: 22px;
-        color: #4A3728;
-        margin-bottom: 4px;
+    .page-header .logo {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: 1px;
     }
-    .top-bar p {
+    .page-header .logo span { color: var(--primary); }
+    .page-header .subtitle {
         font-size: 13px;
-        color: #8B7355;
+        color: var(--text-sub);
+        margin-top: 4px;
     }
-    .top-bar a {
-        color: #5A7D9A;
-        text-decoration: none;
+    .prototype-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #FFF8E7;
+        border: 1px solid #F0D78C;
+        color: #A67C00;
+        font-size: 11px;
         font-weight: 600;
+        padding: 5px 14px;
+        border-radius: 20px;
+        margin-top: 10px;
     }
+    .prototype-badge::before { content: "⚡"; font-size: 12px; }
+    .page-header .links {
+        margin-top: 12px;
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        font-size: 12px;
+    }
+    .page-header .links a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: opacity 0.2s;
+    }
+    .page-header .links a:hover { opacity: 0.7; }
+    .page-header .links span { color: #ccc; }
 
-    /* 手机容器 */
+    /* ====== 手机容器 ====== */
     .phone-container {
-        width: 375px;
-        min-height: 750px;
-        background-color: #F5F7FA;
+        width: 390px;
+        min-height: 780px;
+        background: #F8F6F3;
         position: relative;
         overflow: hidden;
-        border-radius: 40px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.1);
+        border-radius: 44px;
+        box-shadow:
+            0 25px 80px rgba(0,0,0,0.18),
+            0 6px 16px rgba(0,0,0,0.10),
+            inset 0 1px 0 rgba(255,255,255,0.6);
         border: 8px solid #1a1a1a;
     }
 
+    /* ====== 状态栏 ====== */
+    .status-bar {
+        height: 36px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 28px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #333;
+        position: relative;
+        z-index: 10;
+    }
+    .status-icons { display: flex; gap: 5px; align-items: center; }
+
+    /* ====== 页面视图 ====== */
     .page-content {
-        height: calc(100% - 80px);
+        height: calc(100% - 116px);
         overflow-y: auto;
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
-
     .page-content::-webkit-scrollbar { display: none; }
 
-    .tab-active {
-        color: #5A7D9A;
+    .page-view.hidden { display: none; }
+    .page-view {
+        animation: fadeSlideIn 0.35s ease-out;
     }
 
-    .btn-gradient {
-        background: linear-gradient(135deg, #5A7D9A 0%, #8FB98B 100%);
-    }
-
-    .emotion-happy { color: #FFD700; background-color: #FFD700; }
-    .emotion-calm { color: #87CEEB; background-color: #87CEEB; }
-    .emotion-anxious { color: #FFA07A; background-color: #FFA07A; }
-    .emotion-sad { color: #9370DB; background-color: #9370DB; }
-    .emotion-angry { color: #CD5C5C; background-color: #CD5C5C; }
-    .emotion-tired { color: #D3D3D3; background-color: #D3D3D3; }
-
-    .fade-in { animation: fadeIn 0.3s ease-in-out; }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
+    @keyframes fadeSlideIn {
+        from { opacity: 0; transform: translateY(12px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
-    .click-feedback:active { transform: scale(0.95); transition: transform 0.1s; }
+    /* ====== 记录页面（全屏 overlay） ====== */
+    .record-overlay {
+        position: absolute;
+        inset: 0;
+        background: #F8F6F3;
+        z-index: 100;
+        display: none;
+        flex-direction: column;
+        animation: fadeSlideIn 0.3s ease-out;
+    }
+    .record-overlay.show { display: flex; }
 
-    /* 底部提示 */
-    .bottom-hint {
-        margin-top: 16px;
+    /* ====== 底部导航 ====== */
+    .bottom-nav {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 80px;
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(0,0,0,0.06);
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0 12px;
+        z-index: 50;
+    }
+    .nav-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: var(--text-light);
+        font-family: inherit;
+        transition: all 0.25s;
+        padding: 6px 12px;
+        border-radius: 12px;
+        min-width: 64px;
+    }
+    .nav-btn.active {
+        color: var(--primary);
+    }
+    .nav-btn .nav-icon { font-size: 22px; transition: transform 0.25s; }
+    .nav-btn.active .nav-icon { transform: translateY(-2px); }
+    .nav-btn .nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; }
+
+    /* ====== 组件 ====== */
+    .click-feedback:active { transform: scale(0.96); transition: transform 0.1s; }
+
+    .btn-primary {
+        width: 100%;
+        height: 50px;
+        border: none;
+        cursor: pointer;
+        border-radius: 16px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, #5A7D9A 0%, #6B8FA8 50%, #7FA0B5 100%);
+        box-shadow: 0 4px 16px rgba(90,125,154,0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: box-shadow 0.25s, transform 0.15s;
+    }
+    .btn-primary:hover { box-shadow: 0 6px 22px rgba(90,125,154,0.35); }
+    .btn-primary:active { transform: scale(0.97); }
+
+    .btn-secondary {
+        padding: 10px 20px;
+        border: 1.5px solid var(--primary);
+        background: #fff;
+        color: var(--primary);
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: #f0f5f8; }
+
+    .card {
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 20px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .tag {
+        display: inline-block;
+        padding: 3px 10px;
+        font-size: 10px;
+        font-weight: 600;
+        border-radius: 20px;
+        color: #fff;
+    }
+
+    /* 情绪颜色 */
+    .tag-happy { background: #F5A623; }
+    .tag-calm { background: #6B9AC4; }
+    .tag-anxious { background: #E8836E; }
+    .tag-sad { background: #8E7BB8; }
+    .tag-angry { background: #C86464; }
+    .tag-tired { background: #A0A8B0; }
+
+    /* ====== 情绪选择器 ====== */
+    .emotion-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+    .emotion-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 16px 8px;
+        border-radius: 16px;
+        background: #fff;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.25s;
+        box-shadow: var(--shadow-sm);
+    }
+    .emotion-item:hover {
+        border-color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+    .emotion-item.selected {
+        border-color: var(--primary);
+        background: linear-gradient(135deg, #eef5f9, #f0f7f3);
+        box-shadow: 0 4px 16px rgba(90,125,154,0.2);
+    }
+    .emotion-item .emoji { font-size: 36px; }
+    .emotion-item .label { font-size: 12px; font-weight: 600; color: var(--text-sub); }
+    .emotion-item.selected .label { color: var(--primary); }
+
+    /* ====== 页面内容样式 ====== */
+    .home-header {
+        padding: 18px 24px 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .home-header h1 { font-size: 26px; font-weight: 700; color: var(--primary); }
+    .avatar-circle {
+        width: 44px; height: 44px;
+        border-radius: 50%;
+        border: 2.5px solid #fff;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px 0;
+    }
+    .cal-cell {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        cursor: pointer;
+        padding: 4px 0;
+    }
+    .cal-cell .day-num {
+        font-size: 14px;
+        color: #555;
+        width: 30px; height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.2s;
+    }
+    .cal-cell:hover .day-num { background: #eef3f7; }
+    .cal-cell.today .day-num {
+        font-weight: 700;
+        color: #fff;
+        background: var(--primary);
+        box-shadow: 0 2px 8px rgba(90,125,154,0.3);
+    }
+    .cal-dot {
+        width: 5px; height: 5px;
+        border-radius: 50%;
+        transition: transform 0.2s;
+    }
+    .cal-cell:hover .cal-dot { transform: scale(1.5); }
+
+    .diary-preview {
+        padding: 16px;
+        background: #fff;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-sm);
+        border-left: 4px solid #6B9AC4;
+        transition: box-shadow 0.2s;
+        cursor: pointer;
+    }
+    .diary-preview:hover { box-shadow: var(--shadow-md); }
+
+    /* 历史日记日期条 */
+    .date-strip {
+        background: #fff;
+        padding: 12px 16px;
+        overflow-x: auto;
+        white-space: nowrap;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        gap: 18px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .date-strip::-webkit-scrollbar { display: none; }
+    .date-strip .date-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: all 0.2s;
+    }
+    .date-strip .date-circle {
+        width: 38px; height: 38px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f5f5f5;
+        color: #666;
         font-size: 13px;
-        color: #8B7355;
+        font-weight: 500;
+        transition: all 0.25s;
+    }
+    .date-strip .date-item.active .date-circle {
+        background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        color: #fff;
+        box-shadow: 0 2px 10px rgba(90,125,154,0.3);
+    }
+    .date-strip .date-dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+    }
+
+    .stats-header {
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid #f0f0f0;
+        background: #f8f6f3;
+    }
+    .stats-header h1 { font-size: 17px; font-weight: 700; color: var(--text); }
+
+    .stat-card {
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 18px;
+        box-shadow: var(--shadow-sm);
+    }
+    .stat-card h3 {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text-sub);
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .kpi {
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 16px;
+        box-shadow: var(--shadow-sm);
         text-align: center;
     }
-    .bottom-hint a {
-        color: #5A7D9A;
-        font-weight: 600;
+    .kpi .value { font-size: 30px; font-weight: 700; color: var(--primary); }
+    .kpi .label { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+    .kpi .desc { font-size: 10px; color: var(--text-light); margin-top: 4px; }
+
+    /* Profile */
+    .profile-bg {
+        height: 180px;
+        padding: 40px 24px 0;
+        border-radius: 0 0 32px 32px;
+        background: linear-gradient(135deg, #5A7D9A 0%, #6F92A8 40%, #8FB98B 100%);
+        box-shadow: 0 4px 24px rgba(90,125,154,0.2);
+    }
+    .profile-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 16px;
+    }
+    .profile-avatar {
+        width: 72px; height: 72px;
+        border-radius: 50%;
+        border: 4px solid rgba(255,255,255,0.5);
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .menu-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    .menu-item:hover { background: #fafafa; }
+    .menu-item:not(:last-child) { border-bottom: 1px solid #f5f5f5; }
+    .menu-icon {
+        width: 36px; height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    /* ====== 弹窗 ====== */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        display: none;
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-card {
+        background: #fff;
+        width: 340px;
+        max-width: 100%;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+        animation: modalPop 0.3s ease-out;
+    }
+    @keyframes modalPop {
+        from { opacity: 0; transform: scale(0.92) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-img {
+        height: 140px;
+        position: relative;
+        background: #eee;
+    }
+    .modal-img img { width: 100%; height: 100%; object-fit: cover; }
+    .modal-close {
+        position: absolute;
+        top: 12px; right: 12px;
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.35);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(0,0,0,0.55); }
+    .modal-body { padding: 20px; }
+
+    /* ====== 底部提示 ====== */
+    .footnote {
+        margin-top: 20px;
+        font-size: 12px;
+        color: var(--text-light);
+        text-align: center;
+        line-height: 1.8;
+    }
+    .footnote strong { color: var(--text-sub); }
+
+    /* ====== 响应式 ====== */
+    @media (max-width: 420px) {
+        .phone-container {
+            width: 100%;
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+            min-height: 100vh;
+        }
+        .page-header { padding: 0 12px; }
     }
 </style>
 </head>
 <body>
 
-<!-- 顶部提示 -->
-<div class="top-bar">
-    <h2>📱 点击底部导航体验完整交互</h2>
-    <p>← <a href="index.html">返回展示页</a> &nbsp;|&nbsp; <a href="https://github.com/pppttoo/MoodDiary">GitHub 仓库</a></p>
+<!-- ====== 页面顶部标题区 ====== -->
+<div class="page-header">
+    <div class="logo">📔 <span>心迹日记</span> MoodDiary</div>
+    <div class="subtitle">高保真交互原型 · 点击底部导航自由探索</div>
+    <div class="prototype-badge">原型演示 — 部分细节交互为模拟效果，真实体验请下载 APK</div>
+    <div class="links">
+        <a href="index.html">← 返回展示页</a>
+        <span>|</span>
+        <a href="https://github.com/pppttoo/MoodDiary">GitHub 仓库</a>
+        <span>|</span>
+        <a href="https://github.com/pppttoo/MoodDiary#快速开始">下载 APK</a>
+    </div>
 </div>
 
-<!-- 手机容器 -->
+<!-- ====== 手机模拟器 ====== -->
 <div class="phone-container">
 
     <!-- 状态栏 -->
-    <div style="height:24px;display:flex;justify-content:space-between;align-items:center;padding:0 24px;font-size:12px;font-weight:500;color:#333;position:relative;z-index:50;">
+    <div class="status-bar">
         <span>9:41</span>
-        <div style="display:flex;gap:6px;align-items:center;">
-            <svg width="14" height="14" viewBox="0 0 24 24"><path d="M2 22L22 2M17 7H7v10h10V7z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        <div class="status-icons">
+            <svg width="14" height="14" viewBox="0 0 24 24"><path d="M1 21h22M1 21V3h22v18M5 7h14M5 11h14M5 15h10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
             <svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2a8 8 0 018 8c0 4.42-8 12-8 12S4 14.42 4 10a8 8 0 018-8z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-            <span style="font-size:10px;">███</span>
+            <span style="font-size:10px;font-weight:700;">█▁█</span>
         </div>
     </div>
 
-    <!-- 页面容器 -->
+    <!-- ====== 记录今日心情页面（全屏 Overlay） ====== -->
+    <div class="record-overlay" id="record-overlay">
+        <div style="display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid #f0f0f0;background:#fff;">
+            <button onclick="closeRecord()" style="border:none;background:none;font-size:18px;cursor:pointer;color:var(--text-sub);padding:4px;font-family:inherit;">← 返回</button>
+            <h1 style="flex:1;text-align:center;font-size:17px;font-weight:700;">记录今日心情</h1>
+            <div style="width:40px;"></div>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:20px 20px 120px;-ms-overflow-style:none;scrollbar-width:none;">
+            <!-- 情绪选择 -->
+            <p style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:16px;">今天的心情</p>
+            <div class="emotion-grid" id="emotion-grid">
+                <div class="emotion-item selected" onclick="selectEmotion(this, 'happy')" data-emotion="happy">
+                    <span class="emoji">😊</span><span class="label">开心</span>
+                </div>
+                <div class="emotion-item" onclick="selectEmotion(this, 'calm')" data-emotion="calm">
+                    <span class="emoji">😌</span><span class="label">平静</span>
+                </div>
+                <div class="emotion-item" onclick="selectEmotion(this, 'anxious')" data-emotion="anxious">
+                    <span class="emoji">😰</span><span class="label">焦虑</span>
+                </div>
+                <div class="emotion-item" onclick="selectEmotion(this, 'sad')" data-emotion="sad">
+                    <span class="emoji">😢</span><span class="label">难过</span>
+                </div>
+                <div class="emotion-item" onclick="selectEmotion(this, 'angry')" data-emotion="angry">
+                    <span class="emoji">😠</span><span class="label">愤怒</span>
+                </div>
+                <div class="emotion-item" onclick="selectEmotion(this, 'tired')" data-emotion="tired">
+                    <span class="emoji">😴</span><span class="label">疲惫</span>
+                </div>
+            </div>
+
+            <!-- 日记输入 -->
+            <p style="font-size:15px;font-weight:700;color:var(--text);margin:24px 0 12px;">今天发生了什么</p>
+            <textarea
+                placeholder="写下今天的心情故事..."
+                style="width:100%;height:140px;border:1.5px solid #e8e4df;border-radius:16px;padding:16px;font-size:14px;font-family:inherit;resize:none;outline:none;transition:border-color 0.2s;line-height:1.7;background:#fff;"
+                onfocus="this.style.borderColor='var(--primary)'"
+                onblur="this.style.borderColor='#e8e4df'"
+            ></textarea>
+
+            <!-- 添加图片 -->
+            <div style="margin-top:16px;padding:24px;border:2px dashed #e0dcd7;border-radius:16px;text-align:center;color:var(--text-light);cursor:pointer;transition:all 0.2s;background:#fafaf8;">
+                <span style="font-size:32px;display:block;margin-bottom:8px;">📷</span>
+                <span style="font-size:13px;">点击添加图片</span>
+                <span style="font-size:11px;display:block;margin-top:2px;opacity:0.7;">支持 JPG / PNG</span>
+            </div>
+
+            <!-- 提交按钮 -->
+            <button class="btn-primary click-feedback" style="margin-top:24px;" onclick="submitDiary()">
+                <span style="font-size:18px;">✨</span> 保存日记
+            </button>
+            <p style="text-align:center;font-size:10px;color:var(--text-light);margin-top:12px;">提示：此页为原型演示，不会真实保存数据</p>
+        </div>
+    </div>
+
+    <!-- ====== 页面内容区 ====== -->
     <div class="page-content" id="page-container">
 
-        <!-- ====== 页面1: 情绪日历 ====== -->
-        <div class="page-view fade-in" id="page-home">
-            <header style="padding:16px 24px;display:flex;justify-content:space-between;align-items:center;">
-                <h1 style="font-size:26px;font-weight:700;color:#5A7D9A;">心迹</h1>
-                <div style="width:40px;height:40px;border-radius:50%;border:2px solid #fff;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-                    <img alt="头像" style="width:100%;height:100%;object-fit:cover;" src="screenshots/profile.png"/>
+        <!-- 👉 页面1：情绪日历 -->
+        <div class="page-view" id="page-home">
+            <div class="home-header">
+                <h1>心迹</h1>
+                <div class="avatar-circle">
+                    <img src="screenshots/profile.png" alt="头像"/>
                 </div>
-            </header>
+            </div>
 
-            <div style="padding:0 24px 24px;">
-                <button class="click-feedback" style="width:100%;height:48px;border:none;cursor:pointer;border-radius:14px;font-size:15px;font-weight:500;color:#fff;box-shadow:0 4px 12px rgba(90,125,154,0.3);background:linear-gradient(135deg, #5A7D9A 0%, #8FB98B 100%);display:flex;align-items:center;justify-content:center;gap:8px;" onclick="openModal(27)">
+            <!-- 记录按钮 -->
+            <div style="padding:0 24px 16px;">
+                <button class="btn-primary click-feedback" onclick="openRecord()">
                     <span style="font-size:20px;">✏️</span> 记录今日心情
                 </button>
             </div>
 
             <!-- 日历 -->
-            <div style="margin:0 16px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+            <div style="margin:0 16px 20px;" class="card">
                 <div style="text-align:center;margin-bottom:16px;">
-                    <h2 style="color:#333;font-size:16px;font-weight:700;">2026年6月</h2>
+                    <h2 style="color:var(--text);font-size:16px;font-weight:700;">2026年6月</h2>
                 </div>
                 <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px 0;margin-bottom:8px;">
-                    <div style="text-align:center;font-size:12px;color:#999;">日</div>
-                    <div style="text-align:center;font-size:12px;color:#999;">一</div>
-                    <div style="text-align:center;font-size:12px;color:#999;">二</div>
-                    <div style="text-align:center;font-size:12px;color:#999;">三</div>
-                    <div style="text-align:center;font-size:12px;color:#999;">四</div>
-                    <div style="text-align:center;font-size:12px;color:#999;">五</div>
-                    <div style="text-align:center;font-size:12px;color:#999;">六</div>
+                    <div style="text-align:center;font-size:11px;color:#bbb;font-weight:500;">日</div>
+                    <div style="text-align:center;font-size:11px;color:#bbb;font-weight:500;">一</div>
+                    <div style="text-align:center;font-size:11px;color:#bbb;font-weight:500;">二</div>
+                    <div style="text-align:center;font-size:11px;color:#bbb;font-weight:500;">三</div>
+                    <div style="text-align:center;font-size:11px;color:#bbb;font-weight:500;">四</div>
+                    <div style="text-align:center;font-size:11px;color:#bbb;font-weight:500;">五</div>
+                    <div style="text-align:center;font-size:11px;color:#bbb;font-weight:500;">六</div>
                 </div>
-                <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:12px 0;" id="calendar-grid"></div>
-                <div style="margin-top:20px;text-align:center;font-size:12px;color:#aaa;">点击日期查看当日日记</div>
+                <div class="calendar-grid" id="calendar-grid"></div>
+                <p style="text-align:center;font-size:11px;color:var(--text-light);margin-top:14px;">点击日期查看当日日记</p>
             </div>
 
-            <!-- 最近日记预览 -->
-            <div style="margin:16px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);border-left:4px solid #87CEEB;">
-                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
-                    <span style="font-size:14px;font-weight:500;color:#333;">6月6日 · 周六</span>
-                    <span style="padding:2px 8px;background:#87CEEB;color:#fff;font-size:10px;border-radius:20px;">平静</span>
+            <!-- 最近日记 -->
+            <div style="margin:0 16px 24px;">
+                <div class="diary-preview click-feedback" onclick="openModal(6)">
+                    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
+                        <span style="font-size:14px;font-weight:600;color:var(--text);">6月6日 · 周六</span>
+                        <span class="tag tag-calm">平静</span>
+                    </div>
+                    <p style="color:#777;font-size:13px;line-height:1.6;">"今天的天气很好，在公园坐了一会儿，感觉内心非常平静..."</p>
                 </div>
-                <p style="color:#666;font-size:14px;font-style:italic;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">"今天的天气很好，在公园坐了一会儿，感觉内心非常平静..."</p>
             </div>
         </div>
 
-        <!-- ====== 页面2: 心情统计 ====== -->
-        <div class="page-view hidden fade-in" id="page-stats">
-            <header style="height:50px;display:flex;align-items:center;justify-content:center;background:#F5F7FA;border-bottom:1px solid #eee;">
-                <h1 style="font-size:18px;font-weight:700;color:#333;">心情统计</h1>
-            </header>
+        <!-- 👉 页面2：心情统计 -->
+        <div class="page-view hidden" id="page-stats">
+            <div class="stats-header"><h1>心情统计</h1></div>
             <div style="padding:16px;">
-                <div style="background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:16px;">
-                    <h3 style="font-size:14px;font-weight:700;color:#555;margin-bottom:16px;">情绪分布</h3>
-                    <div style="width:100%;height:200px;" id="pie-chart"></div>
+                <div class="stat-card" style="margin-bottom:14px;">
+                    <h3>情绪分布</h3>
+                    <div style="width:100%;height:210px;" id="pie-chart"></div>
                 </div>
-                <div style="background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:16px;">
-                    <h3 style="font-size:14px;font-weight:700;color:#555;margin-bottom:8px;">本月情绪强度变化</h3>
-                    <div style="width:100%;height:160px;" id="bar-chart"></div>
+                <div class="stat-card" style="margin-bottom:14px;">
+                    <h3>本月情绪强度变化</h3>
+                    <div style="width:100%;height:170px;" id="bar-chart"></div>
                 </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                    <div style="background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                        <p style="font-size:12px;color:#999;margin-bottom:4px;">本月记录天数</p>
-                        <p style="font-size:28px;font-weight:700;color:#5A7D9A;">22</p>
-                        <p style="font-size:10px;color:#aaa;">共记录22天日记</p>
+                <div class="kpi-grid" style="margin-top:16px;">
+                    <div class="kpi"><div class="value">22</div><div class="label">本月记录天数</div><div class="desc">共记录22天</div></div>
+                    <div class="kpi"><div class="value">平静</div><div class="label">主导情绪</div><div class="desc">占比 35%</div></div>
+                    <div class="kpi"><div class="value">0.68</div><div class="label">平均情绪强度</div><div class="desc">整体偏稳定</div></div>
+                    <div class="kpi"><div class="value">放松</div><div class="label">AI 治愈建议</div><div class="desc">多做放松训练</div></div>
+                </div>
+                <div style="height:16px;"></div>
+            </div>
+        </div>
+
+        <!-- 👉 页面3：历史日记 -->
+        <div class="page-view hidden" id="page-history">
+            <div class="stats-header"><h1>历史日记</h1></div>
+
+            <!-- 日期条 - 点击切换到日历页对应日期 -->
+            <div class="date-strip" id="date-strip">
+                <div class="date-item" onclick="jumpToCalendarDate(1)">
+                    <span style="font-size:10px;color:#bbb;">周一</span>
+                    <div class="date-circle">1</div>
+                </div>
+                <div class="date-item" onclick="jumpToCalendarDate(2)">
+                    <span style="font-size:10px;color:#bbb;">周二</span>
+                    <div class="date-circle">2</div>
+                </div>
+                <div class="date-item" onclick="jumpToCalendarDate(3)">
+                    <span style="font-size:10px;color:#bbb;">周三</span>
+                    <div class="date-circle">3</div>
+                    <div class="date-dot" style="background:#F5A623;"></div>
+                </div>
+                <div class="date-item" onclick="jumpToCalendarDate(4)">
+                    <span style="font-size:10px;color:#bbb;">周四</span>
+                    <div class="date-circle">4</div>
+                    <div class="date-dot" style="background:#8E7BB8;"></div>
+                </div>
+                <div class="date-item" onclick="jumpToCalendarDate(5)">
+                    <span style="font-size:10px;color:#bbb;">周五</span>
+                    <div class="date-circle">5</div>
+                    <div class="date-dot" style="background:#E8836E;"></div>
+                </div>
+                <div class="date-item active" onclick="jumpToCalendarDate(6)">
+                    <span style="font-size:10px;color:#bbb;">周六</span>
+                    <div class="date-circle">6</div>
+                    <div class="date-dot" style="background:#fff;"></div>
+                </div>
+                <div class="date-item" onclick="jumpToCalendarDate(7)">
+                    <span style="font-size:10px;color:#bbb;">周日</span>
+                    <div class="date-circle">7</div>
+                </div>
+                <div class="date-item" onclick="jumpToCalendarDate(8)">
+                    <span style="font-size:10px;color:#bbb;">周一</span>
+                    <div class="date-circle">8</div>
+                </div>
+            </div>
+
+            <!-- 日记列表 -->
+            <div style="padding:16px;display:flex;flex-direction:column;gap:14px;">
+                <div class="diary-preview click-feedback" onclick="openModal(5)" style="border-left-color:#E8836E;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <span style="font-size:13px;font-weight:700;color:var(--text);">2026-06-05 星期五</span>
+                        <span class="tag tag-anxious">焦虑</span>
                     </div>
-                    <div style="background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                        <p style="font-size:12px;color:#999;margin-bottom:4px;">主导情绪</p>
-                        <p style="font-size:28px;font-weight:700;color:#87CEEB;">平静</p>
-                        <p style="font-size:10px;color:#aaa;">占比35%</p>
+                    <p style="color:#777;font-size:13px;line-height:1.6;margin-bottom:14px;">今天的工作堆积如山，感觉压力很大，总是担心自己做不好。希望明天能好一点...</p>
+                    <div style="display:flex;align-items:center;gap:12px;background:#f9fafb;padding:10px;border-radius:12px;">
+                        <div style="width:52px;height:52px;border-radius:10px;overflow:hidden;flex-shrink:0;">
+                            <img src="screenshots/stats-insight.png" style="width:100%;height:100%;object-fit:cover;" alt="AI插画"/>
+                        </div>
+                        <p style="font-size:11px;color:var(--text-light);font-style:italic;line-height:1.5;">"深呼吸，世界依然温柔。允许自己偶尔的停歇，是为了更好的出发。"</p>
                     </div>
-                    <div style="background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                        <p style="font-size:12px;color:#999;margin-bottom:4px;">平均情绪强度</p>
-                        <p style="font-size:28px;font-weight:700;color:#5A7D9A;">0.68</p>
-                        <p style="font-size:10px;color:#aaa;">整体情绪偏稳定</p>
+                </div>
+                <div class="diary-preview click-feedback" onclick="openModal(4)" style="border-left-color:#8E7BB8;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <span style="font-size:13px;font-weight:700;color:var(--text);">2026-06-04 星期四</span>
+                        <span class="tag tag-sad">难过</span>
                     </div>
-                    <div style="background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                        <p style="font-size:12px;color:#999;margin-bottom:4px;">AI治愈建议</p>
-                        <p style="font-size:14px;font-weight:700;color:#555;">多做放松训练</p>
-                        <p style="font-size:10px;color:#aaa;">基于本月情绪数据生成</p>
+                    <p style="color:#777;font-size:13px;line-height:1.6;margin-bottom:14px;">和好朋友吵架了，心里酸酸的。其实大家都没错，只是立场不同吧。</p>
+                    <div style="display:flex;align-items:center;gap:12px;background:#f9fafb;padding:10px;border-radius:12px;">
+                        <div style="width:52px;height:52px;border-radius:10px;overflow:hidden;flex-shrink:0;">
+                            <img src="screenshots/stats-pie.png" style="width:100%;height:100%;object-fit:cover;" alt="AI插画"/>
+                        </div>
+                        <p style="font-size:11px;color:var(--text-light);font-style:italic;line-height:1.5;">"雨后总会见彩虹。真挚的友谊经得起摩擦，试着明天主动发个表情包吧。"</p>
+                    </div>
+                </div>
+                <div class="diary-preview click-feedback" onclick="openModal(3)" style="border-left-color:#F5A623;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <span style="font-size:13px;font-weight:700;color:var(--text);">2026-06-03 星期三</span>
+                        <span class="tag tag-happy">开心</span>
+                    </div>
+                    <p style="color:#777;font-size:13px;line-height:1.6;margin-bottom:14px;">周末和家人一起去郊游了！看到了漫山遍野的小花，心情瞬间起飞！</p>
+                    <div style="display:flex;align-items:center;gap:12px;background:#f9fafb;padding:10px;border-radius:12px;">
+                        <div style="width:52px;height:52px;border-radius:10px;overflow:hidden;flex-shrink:0;">
+                            <img src="screenshots/stats-bar.png" style="width:100%;height:100%;object-fit:cover;" alt="AI插画"/>
+                        </div>
+                        <p style="font-size:11px;color:var(--text-light);font-style:italic;line-height:1.5;">"阳光洒满心间，快乐就是这么简单。珍藏这一刻的灿烂，它是生活的燃料。"</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ====== 页面3: 历史日记 ====== -->
-        <div class="page-view hidden fade-in" id="page-history">
-            <header style="height:50px;display:flex;align-items:center;justify-content:center;background:#F5F7FA;border-bottom:1px solid #eee;position:sticky;top:0;z-index:10;">
-                <h1 style="font-size:18px;font-weight:700;color:#333;">历史日记</h1>
-            </header>
-            <!-- 顶部日历条 -->
-            <div style="background:#fff;padding:12px 16px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #f0f0f0;display:flex;gap:16px;">
-                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-                    <span style="font-size:10px;color:#aaa;">4</span>
-                    <div style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f5f5f5;color:#666;font-size:13px;position:relative;">
-                        4<div style="position:absolute;bottom:4px;width:6px;height:6px;border-radius:50%;background:#FFD700;"></div>
-                    </div>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-                    <span style="font-size:10px;color:#aaa;">5</span>
-                    <div style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f5f5f5;color:#666;font-size:13px;position:relative;">
-                        5<div style="position:absolute;bottom:4px;width:6px;height:6px;border-radius:50%;background:#9370DB;"></div>
-                    </div>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-                    <span style="font-size:10px;color:#aaa;">6</span>
-                    <div style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#5A7D9A,#8FB98B);color:#fff;font-size:13px;box-shadow:0 2px 8px rgba(90,125,154,0.3);position:relative;">
-                        6<div style="position:absolute;bottom:4px;width:6px;height:6px;border-radius:50%;background:#fff;"></div>
-                    </div>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-                    <span style="font-size:10px;color:#aaa;">7</span>
-                    <div style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f5f5f5;color:#666;font-size:13px;">7</div>
-                </div>
-                <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-                    <span style="font-size:10px;color:#aaa;">8</span>
-                    <div style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f5f5f5;color:#666;font-size:13px;">8</div>
-                </div>
-            </div>
-            <!-- 列表 -->
-            <div style="padding:16px;display:flex;flex-direction:column;gap:16px;">
-                <div class="click-feedback" style="background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                        <span style="font-size:14px;font-weight:700;color:#555;">2026-06-05 星期五</span>
-                        <span style="padding:2px 8px;background:#FFA07A;color:#fff;font-size:10px;border-radius:20px;">焦虑</span>
-                    </div>
-                    <p style="color:#666;font-size:14px;margin-bottom:16px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">今天的工作堆积如山，感觉压力很大，总是担心自己做不好。希望明天能好一点...</p>
-                    <div style="display:flex;align-items:center;gap:12px;background:#f9fafb;padding:8px;border-radius:12px;">
-                        <div style="width:56px;height:56px;border-radius:8px;overflow:hidden;flex-shrink:0;">
-                            <img alt="AI插画" style="width:100%;height:100%;object-fit:cover;" src="screenshots/stats-insight.png"/>
-                        </div>
-                        <p style="font-size:11px;color:#999;font-style:italic;">"深呼吸，世界依然温柔。允许自己偶尔的停歇，是为了更好的出发。"</p>
-                    </div>
-                </div>
-                <div class="click-feedback" style="background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                        <span style="font-size:14px;font-weight:700;color:#555;">2026-06-04 星期四</span>
-                        <span style="padding:2px 8px;background:#9370DB;color:#fff;font-size:10px;border-radius:20px;">难过</span>
-                    </div>
-                    <p style="color:#666;font-size:14px;margin-bottom:16px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">和好朋友吵架了，心里酸酸的。其实大家都没错，只是立场不同吧。</p>
-                    <div style="display:flex;align-items:center;gap:12px;background:#f9fafb;padding:8px;border-radius:12px;">
-                        <div style="width:56px;height:56px;border-radius:8px;overflow:hidden;flex-shrink:0;">
-                            <img alt="AI插画" style="width:100%;height:100%;object-fit:cover;" src="screenshots/stats-pie.png"/>
-                        </div>
-                        <p style="font-size:11px;color:#999;font-style:italic;">"雨后总会见彩虹。真挚的友谊经得起摩擦，试着明天主动发个表情包吧。"</p>
-                    </div>
-                </div>
-                <div class="click-feedback" style="background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                        <span style="font-size:14px;font-weight:700;color:#555;">2026-06-03 星期三</span>
-                        <span style="padding:2px 8px;background:#FFD700;color:#fff;font-size:10px;border-radius:20px;">开心</span>
-                    </div>
-                    <p style="color:#666;font-size:14px;margin-bottom:16px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">周末和家人一起去郊游了！看到了漫山遍野的小花，心情瞬间起飞！</p>
-                    <div style="display:flex;align-items:center;gap:12px;background:#f9fafb;padding:8px;border-radius:12px;">
-                        <div style="width:56px;height:56px;border-radius:8px;overflow:hidden;flex-shrink:0;">
-                            <img alt="AI插画" style="width:100%;height:100%;object-fit:cover;" src="screenshots/stats-bar.png"/>
-                        </div>
-                        <p style="font-size:11px;color:#999;font-style:italic;">"阳光洒满心间，快乐就是这么简单。珍藏这一刻的灿烂，它是生活的燃料。"</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ====== 页面4: 个人中心 ====== -->
-        <div class="page-view hidden fade-in" id="page-profile">
-            <div style="height:180px;padding:40px 24px 0;border-radius:0 0 32px 32px;box-shadow:0 4px 20px rgba(90,125,154,0.2);background:linear-gradient(135deg, #5A7D9A 0%, #8FB98B 100%);">
-                <div style="display:flex;align-items:center;gap:16px;margin-top:16px;">
-                    <div style="width:72px;height:72px;border-radius:50%;border:4px solid rgba(255,255,255,0.5);overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.2);">
-                        <img alt="头像" style="width:100%;height:100%;object-fit:cover;" src="screenshots/profile.png"/>
+        <!-- 👉 页面4：个人中心 -->
+        <div class="page-view hidden" id="page-profile">
+            <div class="profile-bg">
+                <div class="profile-row">
+                    <div class="profile-avatar">
+                        <img src="screenshots/profile.png" alt="头像"/>
                     </div>
                     <div style="color:#fff;">
                         <h2 style="font-size:20px;font-weight:700;">用户001</h2>
-                        <p style="font-size:13px;opacity:0.8;margin-top:4px;">已记录22天日记</p>
+                        <p style="font-size:13px;opacity:0.85;margin-top:4px;">已记录 22 天日记 · 连续签到 3 天</p>
                     </div>
                 </div>
             </div>
             <div style="padding:0 16px;margin-top:-24px;position:relative;z-index:10;">
-                <div style="background:#fff;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);padding:4px 0;">
-                    <div class="click-feedback" style="display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid #f5f5f5;">
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:32px;height:32px;border-radius:8px;background:#FFF8E7;display:flex;align-items:center;justify-content:center;font-size:18px;">⭐</div>
-                            <span style="color:#555;font-weight:500;">我的收藏</span>
+                <div class="card" style="padding:4px 0;">
+                    <div class="menu-item click-feedback" onclick="showTip('收藏功能将在正式版中开放')">
+                        <div style="display:flex;align-items:center;gap:14px;">
+                            <div class="menu-icon" style="background:#FFF8E7;">⭐</div>
+                            <span style="font-weight:500;">我的收藏</span>
                         </div>
-                        <span style="color:#ccc;">&gt;</span>
+                        <span style="color:#ddd;">›</span>
                     </div>
-                    <div class="click-feedback" style="display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid #f5f5f5;">
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:32px;height:32px;border-radius:8px;background:#E8F4FD;display:flex;align-items:center;justify-content:center;font-size:18px;">🤖</div>
-                            <span style="color:#555;font-weight:500;">AI 设置</span>
+                    <div class="menu-item click-feedback" onclick="showTip('AI 设置：可配置豆包大模型密钥')">
+                        <div style="display:flex;align-items:center;gap:14px;">
+                            <div class="menu-icon" style="background:#E8F4FD;">🤖</div>
+                            <span style="font-weight:500;">AI 设置</span>
                         </div>
-                        <span style="color:#ccc;">&gt;</span>
+                        <span style="color:#ddd;">›</span>
                     </div>
-                    <div class="click-feedback" onclick="alert('缓存已清理')" style="display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid #f5f5f5;">
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:32px;height:32px;border-radius:8px;background:#FEE2E2;display:flex;align-items:center;justify-content:center;font-size:18px;">🗑️</div>
-                            <span style="color:#555;font-weight:500;">缓存清理</span>
+                    <div class="menu-item click-feedback" onclick="showTip('缓存已清理 ✓')">
+                        <div style="display:flex;align-items:center;gap:14px;">
+                            <div class="menu-icon" style="background:#FEE2E2;">🗑️</div>
+                            <span style="font-weight:500;">缓存清理</span>
                         </div>
-                        <span style="color:#ccc;">&gt;</span>
+                        <span style="color:#ddd;">›</span>
                     </div>
-                    <div class="click-feedback" style="display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid #f5f5f5;">
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:32px;height:32px;border-radius:8px;background:#ECFDF5;display:flex;align-items:center;justify-content:center;font-size:18px;">ℹ️</div>
-                            <span style="color:#555;font-weight:500;">关于我们</span>
+                    <div class="menu-item click-feedback" onclick="showTip('心迹日记 v1.0 · 原生 Java + Supabase')">
+                        <div style="display:flex;align-items:center;gap:14px;">
+                            <div class="menu-icon" style="background:#ECFDF5;">ℹ️</div>
+                            <span style="font-weight:500;">关于我们</span>
                         </div>
-                        <span style="color:#ccc;">&gt;</span>
+                        <span style="color:#ddd;">›</span>
                     </div>
-                    <div class="click-feedback" style="display:flex;align-items:center;justify-content:space-between;padding:16px;">
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <div style="width:32px;height:32px;border-radius:8px;background:#F3E8FF;display:flex;align-items:center;justify-content:center;font-size:18px;">🛡️</div>
-                            <span style="color:#555;font-weight:500;">隐私协议</span>
+                    <div class="menu-item click-feedback" onclick="showTip('隐私协议：数据默认本地存储，上传需手动开启')">
+                        <div style="display:flex;align-items:center;gap:14px;">
+                            <div class="menu-icon" style="background:#F3E8FF;">🛡️</div>
+                            <span style="font-weight:500;">隐私协议</span>
                         </div>
-                        <span style="color:#ccc;">&gt;</span>
+                        <span style="color:#ddd;">›</span>
                     </div>
                 </div>
-                <button class="click-feedback" onclick="confirm('确定要退出登录吗？')" style="width:100%;margin-top:32px;padding:12px;border:1px solid #CD5C5C;color:#CD5C5C;border-radius:12px;font-size:15px;font-weight:500;background:#fff;cursor:pointer;">
+                <button class="click-feedback" onclick="showTip('点击退出登录（原型演示）')"
+                    style="width:100%;margin-top:28px;padding:13px;border:1.5px solid #C86464;color:#C86464;border-radius:14px;font-size:14px;font-weight:600;background:#fff;cursor:pointer;font-family:inherit;">
                     退出登录
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 底部导航栏 -->
-    <nav style="position:absolute;bottom:0;width:100%;height:80px;background:#fff;border-top:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-around;padding:0 8px;z-index:50;">
-        <button class="click-feedback" onclick="switchPage('home', this)" style="display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:none;cursor:pointer;color:#5A7D9A;font-family:inherit;">
-            <span style="font-size:22px;">📅</span>
-            <span style="font-size:10px;font-weight:500;">情绪日历</span>
+    <!-- ====== 底部导航栏 ====== -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="switchPage('home', this)">
+            <span class="nav-icon">📅</span><span class="nav-label">情绪日历</span>
         </button>
-        <button class="click-feedback" onclick="switchPage('stats', this)" style="display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:none;cursor:pointer;color:#999;font-family:inherit;">
-            <span style="font-size:22px;">📊</span>
-            <span style="font-size:10px;font-weight:500;">心情统计</span>
+        <button class="nav-btn" onclick="switchPage('stats', this)">
+            <span class="nav-icon">📊</span><span class="nav-label">心情统计</span>
         </button>
-        <button class="click-feedback" onclick="switchPage('history', this)" style="display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:none;cursor:pointer;color:#999;font-family:inherit;">
-            <span style="font-size:22px;">📋</span>
-            <span style="font-size:10px;font-weight:500;">历史日记</span>
+        <button class="nav-btn" onclick="switchPage('history', this)">
+            <span class="nav-icon">📋</span><span class="nav-label">历史日记</span>
         </button>
-        <button class="click-feedback" onclick="switchPage('profile', this)" style="display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:none;cursor:pointer;color:#999;font-family:inherit;">
-            <span style="font-size:22px;">👤</span>
-            <span style="font-size:10px;font-weight:500;">个人中心</span>
+        <button class="nav-btn" onclick="switchPage('profile', this)">
+            <span class="nav-icon">👤</span><span class="nav-label">个人中心</span>
         </button>
     </nav>
 </div>
 
-<!-- 日记详情弹窗 -->
-<div id="modal-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;z-index:200;align-items:center;justify-content:center;padding:24px;" onclick="closeModal(event)">
-    <div onclick="event.stopPropagation()" style="background:#fff;width:320px;max-width:100%;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation:fadeIn 0.3s ease;">
-        <div style="height:140px;position:relative;">
-            <img alt="日记详情" style="width:100%;height:100%;object-fit:cover;" src="screenshots/detail.png"/>
-            <button onclick="closeModal()" style="position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.3);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;">✕</button>
+<!-- ====== 日记详情弹窗 ====== -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-img">
+            <img src="screenshots/detail.png" alt="日记详情"/>
+            <button class="modal-close" onclick="closeModal()">✕</button>
         </div>
-        <div style="padding:20px;">
+        <div class="modal-body">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                <h3 style="font-weight:700;color:#333;" id="modal-date">2026-06-06</h3>
-                <span style="padding:2px 8px;background:#87CEEB;color:#fff;font-size:10px;border-radius:20px;" id="modal-tag">平静</span>
+                <h3 style="font-weight:700;color:var(--text);" id="modal-date">2026-06-06</h3>
+                <span class="tag tag-calm" id="modal-tag">平静</span>
             </div>
-            <p style="font-size:14px;color:#666;line-height:1.6;margin-bottom:16px;" id="modal-content">
+            <p style="font-size:14px;color:#666;line-height:1.7;margin-bottom:16px;" id="modal-content">
                 今天是一个特别的日子，虽然没有发生什么惊天动地的事情，但在琐碎的生活中发现了一点点小确幸。
             </p>
-            <div style="border-top:1px solid #f0f0f0;padding-top:16px;">
-                <p style="font-size:11px;color:#5A7D9A;font-weight:500;font-style:italic;">AI 治愈共鸣：</p>
-                <p style="font-size:11px;color:#999;margin-top:4px;font-style:italic;">"心境如水，倒映云舒。平静中蕴含着最深的力量。"</p>
+            <div style="border-top:1px solid #f0f0f0;padding-top:14px;">
+                <p style="font-size:11px;color:var(--primary);font-weight:600;font-style:italic;">✨ AI 治愈共鸣：</p>
+                <p style="font-size:12px;color:var(--text-sub);margin-top:4px;font-style:italic;line-height:1.6;">"心境如水，倒映云舒。平静中蕴含着最深的力量。"</p>
             </div>
         </div>
     </div>
 </div>
 
-<div class="bottom-hint">
-    💡 点击底部导航切换页面 &nbsp;|&nbsp; 点击日历日期查看日记详情
+<!-- ====== Toast 提示 ====== -->
+<div id="toast" style="position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.78);color:#fff;padding:10px 22px;border-radius:20px;font-size:13px;z-index:300;opacity:0;pointer-events:none;transition:opacity 0.3s;font-family:inherit;">
 </div>
 
-<!-- ECharts CDN -->
+<!-- ====== 底部说明 ====== -->
+<div class="footnote">
+    <strong>💡 试试这些操作：</strong><br>
+    底部导航切换页面 · 日历点击日期查看详情 · 点击「记录今日心情」打开记录界面<br>
+    历史日记页点击顶部日期 → 自动跳转到对应日历
+</div>
+
+<!-- ECharts -->
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 
 <script>
     // ====== 页面切换 ======
     function switchPage(pageId, btn) {
-        document.querySelectorAll('.page-view').forEach(v => v.classList.add('hidden'));
+        document.querySelectorAll('.page-view').forEach(function(v) { v.classList.add('hidden'); });
         document.getElementById('page-' + pageId).classList.remove('hidden');
 
-        document.querySelectorAll('nav button').forEach(b => b.style.color = '#999');
-        btn.style.color = '#5A7D9A';
+        document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
 
-        if (pageId === 'stats') setTimeout(initCharts, 150);
+        // 切换到历史页时重置日期条 active
+        if (pageId === 'history') {
+            var items = document.querySelectorAll('#date-strip .date-item');
+            items.forEach(function(it) { it.classList.remove('active'); });
+            if (items.length >= 6) items[5].classList.add('active');
+        }
+
+        if (pageId === 'stats') setTimeout(initCharts, 200);
+    }
+
+    // ====== 记录页面 ======
+    var selectedEmotion = 'happy';
+    function openRecord() {
+        document.getElementById('record-overlay').classList.add('show');
+    }
+    function closeRecord() {
+        document.getElementById('record-overlay').classList.remove('show');
+    }
+    function selectEmotion(el, emotion) {
+        document.querySelectorAll('#emotion-grid .emotion-item').forEach(function(e) { e.classList.remove('selected'); });
+        el.classList.add('selected');
+        selectedEmotion = emotion;
+    }
+    function submitDiary() {
+        showToast('✨ 日记已保存！（原型演示，不会真实存入）');
+        setTimeout(closeRecord, 600);
+    }
+
+    // ====== Toast ======
+    function showTip(msg) {
+        showToast(msg);
+    }
+    function showToast(msg) {
+        var toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.style.opacity = '1';
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(function() { toast.style.opacity = '0'; }, 2000);
+    }
+
+    // ====== 历史日记日期条 → 跳转日历 ======
+    function jumpToCalendarDate(day) {
+        // 高亮当前选中日期
+        var items = document.querySelectorAll('#date-strip .date-item');
+        items.forEach(function(it) { it.classList.remove('active'); });
+        var targetItem = items[day - 1];
+        if (targetItem) targetItem.classList.add('active');
+
+        // 切换到日历页
+        document.querySelectorAll('.page-view').forEach(function(v) { v.classList.add('hidden'); });
+        document.getElementById('page-home').classList.remove('hidden');
+
+        document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.remove('active'); });
+        var homeBtn = document.querySelectorAll('.nav-btn')[0];
+        homeBtn.classList.add('active');
+
+        // 滚动日历到对应日期 + 弹窗
+        setTimeout(function() {
+            openModal(day);
+
+            // 高亮日历中对应日期的格子
+            var cells = document.querySelectorAll('#calendar-grid .cal-cell');
+            cells.forEach(function(c) { c.classList.remove('today'); });
+            var targetCell = cells[day - 1];
+            if (targetCell) {
+                targetCell.classList.add('today');
+                targetCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }, 300);
+
+        showToast('📅 已跳转到 6月' + day + '日');
     }
 
     // ====== 日历生成 ======
     function initCalendar() {
         var grid = document.getElementById('calendar-grid');
-        var daysInMonth = 30;
-        var startDay = 1; // 2026-06-01 is Monday
+        grid.innerHTML = '';
+        var startDay = 1; // 2026-06-01 Monday, offset 0
 
+        // padding
         for (var i = 0; i < startDay; i++) {
             grid.innerHTML += '<div></div>';
         }
 
-        var records = {
-            3: '#FFD700', 4: '#9370DB', 5: '#FFA07A', 6: '#87CEEB'
-        };
+        var records = { 3: '#F5A623', 4: '#8E7BB8', 5: '#E8836E', 6: '#6B9AC4' };
+        var daysInMonth = 30;
 
         for (var d = 1; d <= daysInMonth; d++) {
             var isToday = d === 6;
-            var emotionColor = records[d] || null;
-            var dayHtml =
-                '<div style="display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;" class="click-feedback" onclick="openModal(' + d + ')">' +
-                '<span style="font-size:14px;' + (isToday ? 'font-weight:700;color:#5A7D9A;border:2px solid #5A7D9A;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;' : 'color:#666;') + '">' + d + '</span>' +
-                '<div style="width:6px;height:6px;border-radius:50%;' + (emotionColor ? 'background:' + emotionColor : 'visibility:hidden') + ';"></div>' +
+            var dotColor = records[d] || null;
+            var cellClass = isToday ? 'cal-cell today' : 'cal-cell';
+            var html =
+                '<div class="' + cellClass + ' click-feedback" onclick="openModal(' + d + ')">' +
+                '<span class="day-num">' + d + '</span>' +
+                '<div class="cal-dot" style="' + (dotColor ? 'background:' + dotColor : 'visibility:hidden') + ';"></div>' +
                 '</div>';
-            grid.innerHTML += dayHtml;
+            grid.innerHTML += html;
         }
     }
 
-    // ====== ECharts 图表 ======
-    var pieChartInstance = null;
-    var barChartInstance = null;
-
+    // ====== ECharts ======
+    var pieInstance = null, barInstance = null;
     function initCharts() {
-        // 饼图
         var pieDom = document.getElementById('pie-chart');
-        if (pieChartInstance) pieChartInstance.dispose();
-        pieChartInstance = echarts.init(pieDom);
-        pieChartInstance.setOption({
-            color: ['#FFD700', '#87CEEB', '#FFA07A', '#9370DB', '#CD5C5C', '#D3D3D3'],
-            tooltip: { trigger: 'item' },
+        if (pieInstance) pieInstance.dispose();
+        pieInstance = echarts.init(pieDom);
+        pieInstance.setOption({
+            color: ['#F5A623', '#6B9AC4', '#E8836E', '#8E7BB8', '#C86464', '#A0A8B0'],
+            tooltip: { trigger: 'item', formatter: '{b}: {c}%' },
             series: [{
                 name: '情绪分布',
                 type: 'pie',
-                radius: ['40%', '70%'],
-                itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2 },
+                radius: ['45%', '72%'],
+                itemStyle: { borderRadius: 8, borderColor: '#fff', borderWidth: 2 },
                 label: { show: false },
+                emphasis: { label: { show: true, fontSize: 14, fontWeight: 'bold' } },
                 data: [
                     { value: 25, name: '开心' },
                     { value: 35, name: '平静' },
@@ -457,12 +1028,11 @@
             }]
         });
 
-        // 柱状图
         var barDom = document.getElementById('bar-chart');
-        if (barChartInstance) barChartInstance.dispose();
-        barChartInstance = echarts.init(barDom);
-        barChartInstance.setOption({
-            grid: { top: 10, bottom: 20, left: 35, right: 10 },
+        if (barInstance) barInstance.dispose();
+        barInstance = echarts.init(barDom);
+        barInstance.setOption({
+            grid: { top: 8, bottom: 20, left: 38, right: 8 },
             xAxis: {
                 type: 'category',
                 data: ['1', '5', '10', '15', '20', '25', '30'],
@@ -471,8 +1041,8 @@
                 axisLabel: { color: '#999', fontSize: 10 }
             },
             yAxis: {
-                type: 'value', max: 1,
-                splitLine: { show: false },
+                type: 'value', max: 1.2,
+                splitLine: { lineStyle: { color: '#f0f0f0' } },
                 axisLabel: { color: '#999', fontSize: 10 }
             },
             series: [{
@@ -484,7 +1054,7 @@
                         { offset: 0, color: '#5A7D9A' },
                         { offset: 1, color: '#8FB98B' }
                     ]),
-                    borderRadius: [4, 4, 0, 0]
+                    borderRadius: [6, 6, 0, 0]
                 }
             }]
         });
@@ -493,17 +1063,23 @@
     // ====== 弹窗 ======
     function openModal(day) {
         var dd = day < 10 ? '0' + day : day;
-        document.getElementById('modal-date').innerText = '2026-06-' + dd;
-        document.getElementById('modal-overlay').style.display = 'flex';
+        document.getElementById('modal-date').textContent = '2026-06-' + dd;
+        document.getElementById('modal-overlay').classList.add('show');
     }
-
     function closeModal(e) {
         if (e && e.target !== document.getElementById('modal-overlay')) return;
-        document.getElementById('modal-overlay').style.display = 'none';
+        document.getElementById('modal-overlay').classList.remove('show');
     }
 
+    // ====== ESC 关闭弹窗 ======
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.getElementById('modal-overlay').classList.remove('show');
+        }
+    });
+
     // 初始化
-    window.onload = function () {
+    window.onload = function() {
         initCalendar();
     };
 </script>
