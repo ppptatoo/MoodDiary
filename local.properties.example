@@ -1,0 +1,19 @@
+## 复制此文件为 local.properties，填入你自己的密钥后再编译
+## cp local.properties.example local.properties
+##
+## 这个文件可以安全上传到 GitHub（不含真实密钥）
+
+# Android SDK 路径
+sdk.dir=YOUR_ANDROID_SDK_PATH
+
+# ===== Supabase 配置 =====
+# 访问 https://supabase.com → 创建项目 → Settings → API
+# 复制 Project URL 和 anon public key 填入下面：
+supabase.url=https://YOUR_PROJECT_ID.supabase.co
+supabase.anonkey=YOUR_ANON_KEY_HERE
+
+# ===== 豆包/火山引擎 ARK API 配置（可选，用于 AI 功能）=====
+# 访问 https://console.volcengine.com/ark 获取 API Key 和模型 ID
+ARK_API_KEY=YOUR_ARK_API_KEY_HERE
+ARK_CHAT_MODEL_ID=YOUR_CHAT_MODEL_ID_HERE
+ARK_IMAGE_MODEL_ID=YOUR_IMAGE_MODEL_ID_HERE

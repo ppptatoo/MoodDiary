@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="bg_page">#F7F9FC</color>
+    <color name="text_primary">#2C3E50</color>
+    <color name="text_secondary">#8A9BB0</color>
+    <color name="text_body">#4A5568</color>
+
+    <color name="teal_start">#5B9A9E</color>
+    <color name="teal_end">#8FB996</color>
+    <color name="card_white">#FFFFFF</color>
+    <color name="card_preview_bg">#EEF6FC</color>
+    <color name="card_preview_border">#7EB8D4</color>
+
+    <!-- 治愈系配色：开心→疲惫 对应 6 种心情 -->
+    <color name="mood_happy">#FFB7B2</color>
+    <color name="mood_sad">#C7CEEA</color>
+    <color name="mood_angry">#FF9AA2</color>
+    <color name="mood_calm">#B5EAD7</color>
+    <color name="mood_anxious">#FFDAC1</color>
+    <color name="mood_tired">#E2F0CB</color>
+    <color name="mood_default">#B0BEC5</color>
+
+    <color name="ai_label">#5B9A9E</color>
+    <color name="ai_text">#78909C</color>
+    <color name="nav_active">#4A8589</color>
+    <color name="nav_inactive">#7A8A96</color>
+    <color name="day_selected_ring">#5B9A9E</color>
+    <color name="overlay_dim">#80000000</color>
+
+    <color name="record_title">#4A4039</color>
+    <color name="record_subtitle">#9A8F85</color>
+    <color name="mood_card_bg">#F7F3F0</color>
+    <color name="mood_card_stroke">#F2C2B1</color>
+    <color name="input_warm_bg">#F7F3F0</color>
+    <color name="btn_cancel_bg">#F0EBE8</color>
+    <color name="btn_save_warm">#F2C2B1</color>
+    <color name="btn_save_text">#FFFFFF</color>
+
+    <color name="stats_bg">#F5F7FA</color>
+    <color name="stats_title">#3D4F6A</color>
+    <color name="stats_subtitle">#9AA8B8</color>
+    <color name="stats_value">#4A6FA5</color>
+    <color name="chart_bar_start">#B5EAD7</color>
+    <color name="chart_bar_end">#C7CEEA</color>
+    <color name="stats_calm_value">#B5EAD7</color>
+    <color name="insight_bg">#EEF6FC</color>
+
+    <!-- 历史日记日期条 -->
+    <color name="history_date_selected">#6B8E7B</color>
+    <color name="history_date_empty_bg">#F0F2F5</color>
+    <color name="history_page_bg">#F5F6F8</color>
+
+    <!-- 心情图标圆角方块背景（浅色） -->
+    <color name="mood_icon_bg_happy">#FFE8D6</color>
+    <color name="mood_icon_bg_sad">#E8E4F8</color>
+    <color name="mood_icon_bg_angry">#FFE0E3</color>
+    <color name="mood_icon_bg_calm">#DFF5ED</color>
+    <color name="mood_icon_bg_anxious">#FFE8D0</color>
+    <color name="mood_icon_bg_tired">#EDF5D6</color>
+
+    <!-- 个人中心绿色系配色 -->
+    <color name="profile_header_start">#5B7B6F</color>
+    <color name="profile_header_end">#8BA99B</color>
+    <color name="profile_page_bg">#F5F7F9</color>
+    <color name="profile_card_bg">#FFFFFF</color>
+    <color name="profile_icon_bg_star">#FFF8E1</color>
+    <color name="profile_icon_bg_ai">#E3F2FD</color>
+    <color name="profile_icon_bg_clear">#FFEBEE</color>
+    <color name="profile_icon_bg_info">#E8F5E9</color>
+    <color name="profile_icon_bg_privacy">#F3E5F5</color>
+    <color name="profile_text_title">#2D3748</color>
+    <color name="profile_text_subtitle">#718096</color>
+    <color name="profile_logout_text">#C53030</color>
+    <color name="profile_logout_border">#E53E3E</color>
+
+    <!-- 分隔线 -->
+    <color name="divider_color">#E2E8F0</color>
+
+    <!-- 弹窗关闭按钮背景 -->
+    <color name="dialog_close_bg">#E0E4E8</color>
+
+    <!-- Drawable背景色 -->
+    <color name="chat_ai_bg">#E0E0E0</color>
+    <color name="placeholder_bg">#E8EDF2</color>
+    <color name="add_image_border">#DDD5CF</color>
+    <color name="input_field_bg">#F0F2F5</color>
+    <color name="detail_chip_bg">#DDE8F0</color>
+
+    <!-- 输入框提示文字 -->
+    <color name="text_hint">#A0AEC0</color>
+</resources>

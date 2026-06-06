@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- 背景色：深蓝灰底 -->
+    <color name="bg_page">#0F1118</color>
+    <color name="text_primary">#E4E7ED</color>
+    <color name="text_secondary">#8899AA</color>
+    <color name="text_body">#C0C8D4</color>
+
+    <color name="teal_start">#5B9A9E</color>
+    <color name="teal_end">#7AAA85</color>
+    <!-- 卡片色：略亮于背景 -->
+    <color name="card_white">#1A1D28</color>
+    <color name="card_preview_bg">#1E2A36</color>
+    <color name="card_preview_border">#4A7A90</color>
+
+    <!-- 心情色保持不变（它们是彩色的） -->
+    <color name="mood_happy">#FFB7B2</color>
+    <color name="mood_sad">#C7CEEA</color>
+    <color name="mood_angry">#FF9AA2</color>
+    <color name="mood_calm">#B5EAD7</color>
+    <color name="mood_anxious">#FFDAC1</color>
+    <color name="mood_tired">#E2F0CB</color>
+    <color name="mood_default">#7A8A96</color>
+
+    <color name="ai_label">#7EC8CF</color>
+    <color name="ai_text">#9FAAB5</color>
+    <color name="nav_active">#7EC8CF</color>
+    <color name="nav_inactive">#6B7685</color>
+    <color name="day_selected_ring">#5B9A9E</color>
+    <color name="overlay_dim">#B0000000</color>
+
+    <!-- 记录页深色 -->
+    <color name="record_title">#D8CFC4</color>
+    <color name="record_subtitle">#8E9795</color>
+    <color name="mood_card_bg">#242730</color>
+    <color name="mood_card_stroke">#8B5E4E</color>
+    <color name="input_warm_bg">#242730</color>
+    <color name="btn_cancel_bg">#2A2D36</color>
+    <color name="btn_save_warm">#D4987A</color>
+    <color name="btn_save_text">#1A1D28</color>
+
+    <!-- 统计页深色 -->
+    <color name="stats_bg">#0F1118</color>
+    <color name="stats_title">#D0D8E4</color>
+    <color name="stats_subtitle">#8899AA</color>
+    <color name="stats_value">#7EB6E0</color>
+    <color name="chart_bar_start">#8DD4BD</color>
+    <color name="chart_bar_end">#9BA4D0</color>
+    <color name="stats_calm_value">#8DD4BD</color>
+    <color name="insight_bg">#1A2532</color>
+
+    <!-- 历史页深色 -->
+    <color name="history_date_selected">#6B8E7B</color>
+    <color name="history_date_empty_bg">#252836</color>
+    <color name="history_page_bg">#0F1118</color>
+
+    <!-- 心情图标背景（暗色版） -->
+    <color name="mood_icon_bg_happy">#4A3028</color>
+    <color name="mood_icon_bg_sad">#3A3850</color>
+    <color name="mood_icon_bg_angry">#4A2830</color>
+    <color name="mood_icon_bg_calm">#304A40</color>
+    <color name="mood_icon_bg_anxious">#4A3828</color>
+    <color name="mood_icon_bg_tired">#3A4528</color>
+
+    <!-- 个人中心深色 -->
+    <color name="profile_header_start">#2A3A38</color>
+    <color name="profile_header_end">#3A4A42</color>
+    <color name="profile_page_bg">#0F1118</color>
+    <color name="profile_card_bg">#1A1D28</color>
+    <color name="profile_icon_bg_star">#3A3020</color>
+    <color name="profile_icon_bg_ai">#1A2838</color>
+    <color name="profile_icon_bg_clear">#381820</color>
+    <color name="profile_icon_bg_info">#203820</color>
+    <color name="profile_icon_bg_privacy">#2A1A30</color>
+    <color name="profile_text_title">#E0E4EB</color>
+    <color name="profile_text_subtitle">#8899AA</color>
+    <color name="profile_logout_text">#E06060</color>
+    <color name="profile_logout_border">#E06060</color>
+
+    <!-- 分隔线色 -->
+    <color name="divider_color">#2E3240</color>
+
+    <!-- 弹窗关闭按钮背景 -->
+    <color name="dialog_close_bg">#333640</color>
+
+    <!-- Drawable背景色 -->
+    <color name="chat_ai_bg">#2A2D38</color>
+    <color name="placeholder_bg">#1E2530</color>
+    <color name="add_image_border">#3A3530</color>
+    <color name="input_field_bg">#1E2230</color>
+    <color name="detail_chip_bg">#1A2430</color>
+
+    <!-- 输入框提示文字 -->
+    <color name="text_hint">#5A6070</color>
+</resources>
