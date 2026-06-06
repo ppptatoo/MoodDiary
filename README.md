@@ -9,6 +9,14 @@
 
 ---
 
+## 🌐 在线展示
+
+- 📱 **[交互原型演示](https://pppttoo.github.io/MoodDiary/interactive.html)** — 手机模拟器，点击底部导航体验完整交互（日历、图表、详情弹窗）
+- 📄 **[项目展示页](https://pppttoo.github.io/MoodDiary)** — 功能介绍、截图预览、技术栈
+- 📑 **[GitHub 仓库](https://github.com/pppttoo/MoodDiary)**
+
+---
+
 ## ✨ 项目亮点
 
 ### 🔌 智能双存储模式
