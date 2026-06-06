@@ -146,7 +146,7 @@ mooddiary/
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/your-username/MoodDiary.git
+git clone https://github.com/ppptatoo/MoodDiary.git
 cd MoodDiary
 
 # 2. 复制密钥配置模板
@@ -289,4 +289,4 @@ MIT License
 
 欢迎提交 Issue 和 Pull Request！
 
-如有问题或建议，请联系：`your-email@example.com`
+如有问题或建议，请联系：`2358299518@qq.com`
